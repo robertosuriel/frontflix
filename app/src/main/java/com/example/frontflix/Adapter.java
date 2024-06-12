@@ -1,6 +1,7 @@
 package com.example.frontflix;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MovieViewHolder> {
+
     private Context context;
     private List<MovieItem> movieList;
 
@@ -33,14 +35,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MovieViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         MovieItem movie = movieList.get(position);
-        holder.tvMovieTitle.setText(movie.getTitle());
+        holder.name.setText(movie.getTitle());
+        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + movie.getPosterPath()).into(holder.imgUrl);
 
-        if (!movie.getPosterPath().isEmpty()) {
-            String imageUrl = "https://image.tmdb.org/t/p/w500" + movie.getPosterPath();
-            Picasso.get().load(imageUrl).into(holder.imgPoster);
-        } else {
-            holder.imgPoster.setImageResource(R.drawable.logo); // Substitua por uma imagem placeholder
-        }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, DetailsActivity.class);
+            intent.putExtra("movieId", movie.getId());
+            intent.putExtra("movieTitle", movie.getTitle());
+            intent.putExtra("movieOverview", movie.getOverview());
+            intent.putExtra("moviePosterPath", movie.getPosterPath());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -53,14 +58,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MovieViewHolder> {
         notifyDataSetChanged();
     }
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgPoster;
-        TextView tvMovieTitle;
+    static class MovieViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        ImageView imgUrl;
 
-        public MovieViewHolder(@NonNull View itemView) {
+        MovieViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgPoster = itemView.findViewById(R.id.imgUrl);
-            tvMovieTitle = itemView.findViewById(R.id.name);
+            name = itemView.findViewById(R.id.name);
+            imgUrl = itemView.findViewById(R.id.imgUrl);
         }
     }
 }

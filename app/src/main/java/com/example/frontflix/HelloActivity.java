@@ -97,6 +97,8 @@ public class HelloActivity extends AppCompatActivity {
                     movie.setTitle(movieJson.getString("title"));
                     String posterPath = movieJson.has("poster_path") ? movieJson.getString("poster_path") : "";
                     movie.setPosterPath(posterPath);
+                    String overview = movieJson.has("overview") ? movieJson.getString("overview") : "";
+                    movie.setOverview(overview); // Add overview to MovieItem
                     movieList.add(movie);
                 }
 

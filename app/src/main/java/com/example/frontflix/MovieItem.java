@@ -1,14 +1,12 @@
 package com.example.frontflix;
 
-import com.google.gson.annotations.SerializedName;
-
 public class MovieItem {
-    @SerializedName("id")
     private int id;
-    @SerializedName("title")
     private String title;
-    @SerializedName("poster_path")
+    private String overview;
     private String posterPath;
+
+    // Construtores, getters e setters
 
     public int getId() {
         return id;
@@ -24,6 +22,14 @@ public class MovieItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public String getPosterPath() {
